@@ -1,6 +1,6 @@
 package com.mexeer.todo.repository;
 
-import com.mexeer.todo.entity.TodoList;
+import com.mexeer.todo.entity.ToDoList;
 
-public interface ToDoListRepository extends GenericRepository<TodoList,Long> {
+public interface ToDoListRepository extends GenericRepository<ToDoList,Long> {
 }
