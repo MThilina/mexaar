@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Sample Data for User Table -->
+    <changeSet id="sample_user_data" author="thilinam">
+        <insert tableName="user">
+            <column name="id" value="1" />
+            <column name="first_name" value="John" />
+            <column name="last_name" value="Doe" />
+            <column name="gender" value="MALE" />
+            <column name="email" value="john.doe@example.com" />
+            <column name="password" value="MTIzNDU2Nzg5" /> <!-- 123456789 Base64 encoded -->
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="2" />
+            <column name="first_name" value="Jane" />
+            <column name="last_name" value="Smith" />
+            <column name="gender" value="FEMALE" />
+            <column name="email" value="jane.smith@example.com" />
+            <column name="password" value="MTIzNDU2Nzg5" />
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="3" />
+            <column name="first_name" value="Alice" />
+            <column name="last_name" value="Johnson" />
+            <column name="gender" value="FEMALE" />
+            <column name="email" value="alice.johnson@example.com" />
+            <column name="password" value="MTIzNDU2Nzg5" />
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="4" />
+            <column name="first_name" value="Bob" />
+            <column name="last_name" value="Brown" />
+            <column name="gender" value="MALE" />
+            <column name="email" value="bob.brown@example.com" />
+            <column name="password" value="MTIzNDU2Nzg5" />
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="5" />
+            <column name="first_name" value="Charlie" />
+            <column name="last_name" value="Davis" />
+            <column name="gender" value="MALE" />
+            <column name="email" value="charlie.davis@example.com" />
+            <column name="password" value="MTIzNDU2Nzg5" />
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="6" />
+            <column name="first_name" value="Emily" />
+            <column name="last_name" value="Wilson" />
+            <column name="gender" value="FEMALE" />
+            <column name="email" value="emily.wilson@example.com" />
+            <column name="password" value="MTIzNDU2Nzg5" />
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="7" />
+            <column name="first_name" value="Frank" />
+            <column name="last_name" value="Miller" />
+            <column name="gender" value="MALE" />
+            <column name="email" value="frank.miller@example.com" />
+            <column name="password" value="MTIzNDU2Nzg5" />
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="8" />
+            <column name="first_name" value="Grace" />
+            <column name="last_name" value="Lee" />
+            <column name="gender" value="FEMALE" />
+            <column name="email" value="grace.lee@example.com" />
+            <column name="password" value="MTIzNDU2Nzg5" />
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="9" />
+            <column name="first_name" value="Henry" />
+            <column name="last_name" value="Clark" />
+            <column name="gender" value="MALE" />
+            <column name="email" value="henry.clark@example.com" />
+            <column name="password" value="MTIzNDU2Nzg5" />
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="10" />
+            <column name="first_name" value="Ivy" />
+            <column name="last_name" value="Walker" />
+            <column name="gender" value="FEMALE" />
+            <column name="email" value="ivy.walker@example.com" />
+            <column name="password" value="MTIzNDU2Nzg5" />
+        </insert>
+    </changeSet>
+
+    <!-- Sample Data for ToDoList Table -->
+    <changeSet id="sample_todolist_data" author="thilinam">
+        <insert tableName="todolist">
+            <column name="id" value="1" />
+            <column name="name" value="Grocery Shopping" />
+            <column name="description" value="Buy groceries for the week" />
+            <column name="user_id" value="1" />
+        </insert>
+        <insert tableName="todolist">
+            <column name="id" value="2" />
+            <column name="name" value="Project Planning" />
+            <column name="description" value="Plan the new software project" />
+            <column name="user_id" value="2" />
+        </insert>
+        <insert tableName="todolist">
+            <column name="id" value="3" />
+            <column name="name" value="Workout Routine" />
+            <column name="description" value="Create a weekly workout routine" />
+            <column name="user_id" value="3" />
+        </insert>
+        <insert tableName="todolist">
+            <column name="id" value="4" />
+            <column name="name" value="House Cleaning" />
+            <column name="description" value="Schedule house cleaning tasks" />
+            <column name="user_id" value="4" />
+        </insert>
+        <insert tableName="todolist">
+            <column name="id" value="5" />
+            <column name="name" value="Book Reading" />
+            <column name="description" value="Read a new book each month" />
+            <column name="user_id" value="5" />
+        </insert>
+        <insert tableName="todolist">
+            <column name="id" value="6" />
+            <column name="name" value="Team Meeting" />
+            <column name="description" value="Arrange team meetings for next week" />
+            <column name="user_id" value="6" />
+        </insert>
+        <insert tableName="todolist">
+            <column name="id" value="7" />
+            <column name="name" value="Vacation Planning" />
+            <column name="description" value="Plan the family vacation" />
+            <column name="user_id" value="7" />
+        </insert>
+        <insert tableName="todolist">
+            <column name="id" value="8" />
+            <column name="name" value="Gardening" />
+            <column name="description" value="Work on the garden this weekend" />
+            <column name="user_id" value="8" />
+        </insert>
+        <insert tableName="todolist">
+            <column name="id" value="9" />
+            <column name="name" value="Car Maintenance" />
+            <column name="description" value="Schedule car maintenance" />
+            <column name="user_id" value="9" />
+        </insert>
+        <insert tableName="todolist">
+            <column name="id" value="10" />
+            <column name="name" value="Cooking Class" />
+            <column name="description" value="Attend a cooking class" />
+            <column name="user_id" value="10" />
+        </insert>
+        <!-- More ToDoList inserts (20 in total) -->
+    </changeSet>
+
+    <!-- Sample Data for Task Table -->
+    <changeSet id="sample_task_data" author="thilinam">
+        <insert tableName="task">
+            <column name="id" value="1" />
+            <column name="name" value="Buy Milk" />
+            <column name="description" value="Buy 2 liters of milk" />
+            <column name="start_date" value="2024-10-01" />
+            <column name="end_date" value="2024-10-01" />
+            <column name="status" value="COMPLETED" />
+            <column name="todo_id" value="1" />
+        </insert>
+        <insert tableName="task">
+            <column name="id" value="2" />
+            <column name="name" value="Create Presentation" />
+            <column name="description" value="Prepare the project presentation" />
+            <column name="start_date" value="2024-10-05" />
+            <column name="end_date" value="2024-10-10" />
+            <column name="status" value="IN_PROGRESS" />
+            <column name="todo_id" value="2" />
+        </insert>
+        <insert tableName="task">
+            <column name="id" value="3" />
+            <column name="name" value="Brainstorm Ideas" />
+            <column name="description" value="Brainstorm ideas for the new campaign" />
+            <column name="start_date" value="2024-10-15" />
+            <column name="end_date" value="2024-10-20" />
+            <column name="status" value="TODO" />
+            <column name="todo_id" value="3" />
+        </insert>
+        <insert tableName="task">
+            <column name="id" value="4" />
+            <column name="name" value="Clean Kitchen" />
+            <column name="description" value="Clean the kitchen thoroughly" />
+            <column name="start_date" value="2024-10-10" />
+            <column name="end_date" value="2024-10-11" />
+            <column name="status" value="COMPLETED" />
+            <column name="todo_id" value="4" />
+        </insert>
+        <insert tableName="task">
+            <column name="id" value="5" />
+            <column name="name" value="Read Chapter 1" />
+            <column name="description" value="Read the first chapter of the new book" />
+            <column name="start_date" value="2024-10-07" />
+            <column name="end_date" value="2024-10-07" />
+            <column name="status" value="IN_PROGRESS" />
+            <column name="todo_id" value="5" />
+        </insert>
+        <!-- More Task inserts (20 in total) -->
+    </changeSet>
+
+</databaseChangeLog>
