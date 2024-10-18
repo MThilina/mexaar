@@ -12,13 +12,13 @@ import java.util.Optional;
  */
 public interface GenericService <T,ID>{
 
-    T create(T entity);
+    T create(T entity) throws Exception;
 
-    T update (ID id,T entity);
+    T update (ID id,T entity) throws Exception;
 
-    Optional<T> getById(ID id);
+    Optional<T> getById(ID id) throws Exception;
 
-    List<T> getAll();
+    List<T> getAll() throws Exception;
 
-    void deleteById(ID id);
+    void deleteById(ID id) throws Exception;
 }
