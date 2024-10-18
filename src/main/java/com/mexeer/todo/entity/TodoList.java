@@ -11,9 +11,7 @@ import java.util.List;
 @Setter
 @Entity
 public class TodoList extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     private String name;
     private String description;
 

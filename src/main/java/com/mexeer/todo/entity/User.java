@@ -14,9 +14,6 @@ import java.util.List;
 @Setter
 @Entity
 public class User extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NotNull(message = "field should not be null") @NotEmpty(message = "field should not be blank")
     private String firstName;
