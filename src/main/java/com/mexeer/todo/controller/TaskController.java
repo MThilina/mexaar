@@ -1,7 +1,7 @@
 package com.mexeer.todo.controller;
 
 import com.mexeer.todo.entity.Task;
-import com.mexeer.todo.entity.TaskStatus;
+import com.mexeer.todo.constant.TaskStatus;
 import com.mexeer.todo.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

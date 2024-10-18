@@ -1,7 +1,7 @@
 package com.mexeer.todo.service;
 
 import com.mexeer.todo.entity.Task;
-import com.mexeer.todo.entity.TaskStatus;
+import com.mexeer.todo.constant.TaskStatus;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,5 +1,6 @@
 package com.mexeer.todo.entity;
 
+import com.mexeer.todo.constant.TaskStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

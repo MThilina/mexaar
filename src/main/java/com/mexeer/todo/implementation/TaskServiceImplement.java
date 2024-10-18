@@ -1,7 +1,7 @@
 package com.mexeer.todo.implementation;
 
 import com.mexeer.todo.entity.Task;
-import com.mexeer.todo.entity.TaskStatus;
+import com.mexeer.todo.constant.TaskStatus;
 import com.mexeer.todo.entity.ToDoList;
 import com.mexeer.todo.repository.TaskRepository;
 import com.mexeer.todo.repository.ToDoListRepository;

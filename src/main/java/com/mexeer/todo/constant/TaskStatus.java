@@ -1,4 +1,4 @@
-package com.mexeer.todo.entity;
+package com.mexeer.todo.constant;
 
 public enum TaskStatus {
     TODO,IN_PROGRESS,COMPLETED;

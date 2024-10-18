@@ -1,5 +1,6 @@
 package com.mexeer.todo.entity;
 
+import com.mexeer.todo.constant.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
