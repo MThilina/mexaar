@@ -2,13 +2,15 @@ package com.mexeer.todo.service;
 
 import com.mexeer.todo.entity.User;
 import com.mexeer.todo.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-
+@Log4j2
 @Service
 public class UserService implements GenericService<User,Long>{
     private final UserRepository userRepository;
@@ -19,14 +21,12 @@ public class UserService implements GenericService<User,Long>{
 
 
     @Override
-    public User create(User user) {
+    public User create(User user) throws Exception{
     if(userRepository.existsByEmail(user.getEmail())){
         // check if the email already exist in the system
-        // true
-        System.out.println("Email is already usingS");
-        return null;
+        throw new IllegalArgumentException("Email is already using ");
     }else{
-        String password = Base64.getEncoder().encodeToString(user.getPassword().getBytes()); // use plain Base64
+        String password = encryptPassword(user); // use plain Base64
          user.setPassword(password);
          return userRepository.save(user);
     }
@@ -35,43 +35,54 @@ public class UserService implements GenericService<User,Long>{
     }
 
     @Override
-    public User update(Long id, User user) {
-        Optional<User> currentUser = userRepository.findById(id);
-        if(currentUser.isPresent()){
-            currentUser.get().setFirstName(user.getFirstName());
-            currentUser.get().setLastName(user.getLastName());
-            currentUser.get().setGender(user.getGender());
-            if(!currentUser.get().getEmail().equals(user.getEmail())){
-                if(userRepository.existsByEmail(user.getEmail())){
-                    // we have to mention that this email is already in use
-                    System.out.println("Email is already in use.."); // best case is to throw exceptions from interface as well
-                }
-                currentUser.get().setEmail(user.getEmail());
-            }
-            if(currentUser.get().getPassword().equals(user.getPassword())){
-                String encryptedPassword = Base64.getEncoder().encodeToString(user.getPassword().getBytes());
-                currentUser.get().setPassword(encryptedPassword);
-            }
-            return userRepository.save(currentUser.get());
-        }else{
-            System.out.println("Update Failed .. ");
-            return null;
+    public User update(Long id, User user) throws Exception{
+        // Check if user exists before updating
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with ID " + id + " not found."));
+
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setGender(user.getGender());
+
+        // Update email if it's changed and not in use
+        if (!existingUser.getEmail().equals(user.getEmail()) && userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email is already in use.");
         }
+        existingUser.setEmail(user.getEmail());
+
+        // Encrypt the password if updated
+        if (!user.getPassword().isEmpty() && !existingUser.getPassword().equals(user.getPassword())) {
+            existingUser.setPassword(encryptPassword(user));
+        }
+
+        return userRepository.save(existingUser);
+    }
+
+
+    @Override
+    public Optional<User> getById(Long id) throws Exception{
+        return userRepository.findById(id);
     }
 
     @Override
-    public Optional<User> getById(Long aLong) {
-        return Optional.empty();
+    public List<User> getAll() throws Exception{
+        return userRepository.findAll();
     }
 
     @Override
-    public List<User> getAll() {
-        return List.of();
+    public void deleteById(Long id) throws Exception{
+        // Check if user exists before deletion
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with ID " + id + " not found."));
+
+        // Cascade delete the user's ToDo lists (done by cascade setting in the entity)
+        userRepository.delete(user);
     }
 
-    @Override
-    public void deleteById(Long aLong) {
+/******************** Private Mehtod *******************************************/
 
+    private static String encryptPassword(User user) {
+        return Base64.getEncoder().encodeToString(user.getPassword().getBytes());
     }
 
 
