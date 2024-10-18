@@ -7,10 +7,12 @@ import com.mexeer.todo.repository.TaskRepository;
 import com.mexeer.todo.repository.ToDoListRepository;
 import com.mexeer.todo.service.TaskService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TaskServiceImplement implements TaskService {
 
     private final TaskRepository taskRepository;

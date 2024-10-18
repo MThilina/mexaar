@@ -6,10 +6,12 @@ import com.mexeer.todo.repository.ToDoListRepository;
 import com.mexeer.todo.repository.UserRepository;
 import com.mexeer.todo.service.ToDoListService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ToDoListImplementation implements ToDoListService {
 
     private final ToDoListRepository toDoListRepository;
