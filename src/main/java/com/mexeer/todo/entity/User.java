@@ -3,7 +3,6 @@ package com.mexeer.todo.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +26,6 @@ public class User extends BaseEntity{
     private String password;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<TodoList> todoLists;
+    private List<ToDoList> todoLists;
 }
 

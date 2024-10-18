@@ -20,5 +20,5 @@ public class Task extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "todo_id")
-    private TodoList toDoList;
+    private ToDoList toDoList;
 }
