@@ -5,7 +5,6 @@ import com.mexeer.todo.entity.TaskStatus;
 import com.mexeer.todo.entity.ToDoList;
 import com.mexeer.todo.repository.TaskRepository;
 import com.mexeer.todo.repository.ToDoListRepository;
-import com.mexeer.todo.service.GenericService;
 import com.mexeer.todo.service.TaskService;
 import jakarta.persistence.EntityNotFoundException;
 
