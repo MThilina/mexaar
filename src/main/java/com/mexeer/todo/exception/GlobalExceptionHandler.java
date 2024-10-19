@@ -1,4 +1,4 @@
-package com.mexeer.todo.Exception;
+package com.mexeer.todo.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
