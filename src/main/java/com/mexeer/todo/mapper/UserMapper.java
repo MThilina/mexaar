@@ -7,9 +7,8 @@ import org.mapstruct.Mapping;
 
 @Mapper
 public interface UserMapper {
-    @Mapping(source = "todoLists", target = "todoLists")
+
     UserDTO toDTO(User user);
 
-    @Mapping(source = "todoLists", target = "todoLists")
     User toEntity(UserDTO userDTO);
 }

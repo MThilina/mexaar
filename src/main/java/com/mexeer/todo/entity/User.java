@@ -26,7 +26,5 @@ public class User extends BaseEntity{
     @NotNull(message = "field should not be null") @NotEmpty(message = "field should not be blank")
     private String password;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<ToDoList> todoLists;
 }
 
