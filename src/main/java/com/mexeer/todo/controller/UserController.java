@@ -1,83 +1,93 @@
 package com.mexeer.todo.controller;
 
+import com.mexeer.todo.dto.UserDTO;
 import com.mexeer.todo.entity.User;
+import com.mexeer.todo.mapper.UserMapper;
 import com.mexeer.todo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name = "User Management System", description = "Operations related to managing users")
+@Tag(name = "User Management", description = "Operations related to managing users")
 public class UserController {
 
     private final UserService userService;
+    private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @Operation(summary = "Create a new user", description = "Adds a new user to the system")
+    @Operation(summary = "Create a new User", description = "Adds a new user to the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User successfully created"),
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) throws Exception {
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) throws Exception {
+        User user = userMapper.toEntity(userDTO);
         User createdUser = userService.create(user);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        UserDTO createdUserDTO = userMapper.toDTO(createdUser);
+        return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get all users", description = "Retrieves a list of all users")
+    @Operation(summary = "Get all Users", description = "Retrieves a list of all users in the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list"),
             @ApiResponse(responseCode = "404", description = "Users not found")
     })
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() throws Exception {
+    public ResponseEntity<List<UserDTO>> getAllUsers() throws Exception {
         List<User> users = userService.getAll();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        List<UserDTO> userDTOs = users.stream().map(userMapper::toDTO).collect(Collectors.toList());
+        return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
 
-    @Operation(summary = "Get user by ID", description = "Retrieves a user by their ID")
+    @Operation(summary = "Get User by ID", description = "Retrieves a user by their ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved user"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) throws Exception {
-        Optional<User> user = userService.getById(id);
-        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) throws Exception {
+        Optional<User> user = userService.getById(userId);
+        return user.map(value -> new ResponseEntity<>(userMapper.toDTO(value), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @Operation(summary = "Update user by ID", description = "Updates an existing user by their ID")
+    @Operation(summary = "Update User by ID", description = "Updates an existing user by their ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully updated user"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) throws Exception {
-        User updatedUser = userService.update(id, user);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) throws Exception {
+        User user = userMapper.toEntity(userDTO);
+        User updatedUser = userService.update(userId, user);
+        return updatedUser != null ? new ResponseEntity<>(userMapper.toDTO(updatedUser), HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @Operation(summary = "Delete user by ID", description = "Deletes a user by their ID")
+    @Operation(summary = "Delete User by ID", description = "Deletes a user by their ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successfully deleted user"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) throws Exception {
-        userService.deleteById(id);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) throws Exception {
+        userService.deleteById(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
