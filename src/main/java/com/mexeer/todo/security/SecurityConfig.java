@@ -1,15 +1,16 @@
 package com.mexeer.todo.security;
 
+import com.mexeer.todo.implementation.CustomUserDetailsService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,31 +24,57 @@ import org.springframework.security.core.userdetails.UserDetails;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final AuthenticationEntryPoint unauthorizedHandler;
+    private final JwtTokenProvider jwtTokenProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomUserDetailsService userDetailsService;
 
-    public SecurityConfig(AuthenticationEntryPoint unauthorizedHandler, JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.unauthorizedHandler = unauthorizedHandler;
+
+//    public SecurityConfig(@Lazy JwtTokenProvider jwtTokenProvider,
+//                          @Lazy UserDetailsService userDetailsService,
+//                          @Lazy JwtAuthenticationFilter jwtAuthenticationFilter) {
+//
+//        this.jwtTokenProvider = jwtTokenProvider;
+//        this.userDetailsService = userDetailsService;
+//        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+//    }
+
+    public SecurityConfig(@Lazy JwtTokenProvider jwtTokenProvider,
+                          @Lazy JwtAuthenticationFilter jwtAuthenticationFilter,
+                          @Lazy CustomUserDetailsService userDetailsService) {
+        this.jwtTokenProvider = jwtTokenProvider;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.userDetailsService = userDetailsService;
     }
+
+
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        return http.cors(httpSecurity -> httpSecurity.disable())
+//                .csrf(httpSecurity -> httpSecurity.disable())
+//              //  .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(unauthorizedHandler))
+//                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
+//                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/v1/public/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET,"/v3/api-docs/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(httpSecurity -> httpSecurity.disable())
+//                .httpBasic(httpSecurity -> httpSecurity.disable())
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .authenticationProvider(daoAuthenticationProvider())
+//                .build();
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.cors(httpSecurity -> httpSecurity.disable())
-                .csrf(httpSecurity -> httpSecurity.disable())
-                .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(unauthorizedHandler))
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/public/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/users/**").permitAll()
+        http.cors().and().csrf().disable()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**","/api/auth/**").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(httpSecurity -> httpSecurity.disable())
-                .httpBasic(httpSecurity -> httpSecurity.disable())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authenticationProvider(daoAuthenticationProvider())
-                .build();
+                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint()).and()
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 
     @Bean
@@ -66,27 +93,42 @@ public class SecurityConfig {
         };
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("user")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails user = User.withUsername("user")
+//                .password(passwordEncoder().encode("password"))
+//                .roles("USER")
+//                .build();
+//        return new InMemoryUserDetailsManager(user);
+//    }
+
+//    @Bean
+//    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+//        return http.getSharedObject(AuthenticationManagerBuilder.class)
+//                .authenticationProvider(daoAuthenticationProvider())
+//                .build();
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .authenticationProvider(daoAuthenticationProvider())
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder())
+                .and()
                 .build();
     }
 
+//    @Bean
+//    public DaoAuthenticationProvider daoAuthenticationProvider() {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setUserDetailsService(userDetailsService());
+//        provider.setPasswordEncoder(passwordEncoder());
+//        return provider;
+//    }
+
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService());
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtTokenProvider, userDetailsService);
     }
+
 }
