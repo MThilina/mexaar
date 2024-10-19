@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/public/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/users/create/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(httpSecurity -> httpSecurity.disable())
                 .httpBasic(httpSecurity -> httpSecurity.disable())
