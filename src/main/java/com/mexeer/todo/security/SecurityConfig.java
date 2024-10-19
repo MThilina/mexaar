@@ -1,5 +1,6 @@
 package com.mexeer.todo.security;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -40,7 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/public/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/users/create/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/users/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(httpSecurity -> httpSecurity.disable())
                 .httpBasic(httpSecurity -> httpSecurity.disable())
@@ -53,7 +54,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new PasswordEncoder() {
             @Override
-            public String encode(CharSequence rawPassword) {
+            public String encode(@NotNull CharSequence rawPassword) {
                 return java.util.Base64.getEncoder().encodeToString(rawPassword.toString().getBytes());
             }
 

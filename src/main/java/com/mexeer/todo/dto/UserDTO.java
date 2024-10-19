@@ -11,5 +11,6 @@ public class UserDTO {
     private String lastName;
     private String gender;
     private String email;
+    private String password;
     private List<ToDoListDTO> todoLists;
 }

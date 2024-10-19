@@ -23,6 +23,7 @@
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false" />
             </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created_date" type="timestamp"/>
         </createTable>
         <createIndex indexName="idx_user_email" tableName="user">
             <column name="email" />
@@ -42,6 +43,7 @@
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false" />
             </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created_date" type="timestamp"/>
         </createTable>
         <createIndex indexName="idx_todolist_user_id" tableName="todolist">
             <column name="user_id" />
@@ -66,6 +68,7 @@
             <column name="todo_id" type="BIGINT">
                 <constraints nullable="false" />
             </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created_date" type="timestamp"/>
         </createTable>
         <createIndex indexName="idx_task_todo_id" tableName="task">
             <column name="todo_id" />
